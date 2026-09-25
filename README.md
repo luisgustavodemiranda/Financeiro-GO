@@ -11,6 +11,7 @@ O projeto explora monólito modular, separação entre handlers HTTP, serviços 
 - Consulta de lançamentos e saldo, com proteção contra overflow de `int64`.
 - API executável em memória, sem necessidade de banco para experimentar.
 - Persistência PostgreSQL com migrations e integração validada em banco real.
+- Cadastro e listagem de cartões por nome em memória; persistência de cartões preparada, aguardando migration 0002 e validação real.
 
 ## Arquitetura
 
@@ -50,6 +51,8 @@ O arquivo `.env.example` documenta variáveis; arquivos `.env` ainda não são c
 Para PostgreSQL, consulte [a preparação da fase 3](doc/03-postgresql.md). `PERSISTENCE=postgres` exige `FINANCEIRO_DATABASE_URL` ou variáveis `DB_*`, banco exclusivo e migration previamente aplicada com autorização. A API nunca aplica migrations ao iniciar e nunca troca silenciosamente PostgreSQL por memória quando há erro.
 
 O ambiente local provisionado tem instruções de uso e evidências na [conclusão da fase 3](doc/05-integracao-postgres-validada.md). O arquivo local de credenciais protegidas não acompanha o repositório; quem clonar o projeto deve configurar seu próprio ambiente.
+
+**Fase 4 em preparação:** esta versão exige também a migration 0002 para iniciar com PostgreSQL. Ela ainda não foi aplicada nos bancos locais. O modo em memória continua funcionando; veja [cadastro de cartões](doc/06-cadastro-cartoes.md). A autorização dada anteriormente para 0001 não abrange 0002.
 
 ## Validar
 

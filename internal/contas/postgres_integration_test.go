@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"financeirogo/internal/cartoes"
 	"financeirogo/internal/contas"
 	"financeirogo/internal/database"
 	"financeirogo/internal/server"
@@ -97,7 +98,7 @@ func TestPostgresIntegration(t *testing.T) {
 		if len(get(t, a.ID).Entries) != 0 {
 			t.Fatal("saldo inicial gerou receita")
 		}
-		h := server.NewHandlerWithRepository(contas.NewPostgresRepository(pool, 5*time.Second), "postgresql")
+		h := server.NewHandlerWithRepositories(contas.NewPostgresRepository(pool, 5*time.Second), cartoes.NewPostgresRepository(pool, 5*time.Second), "postgresql")
 		for _, body := range []string{
 			`{"kind":"income","description":"Receita ficticia","amount_cents":500,"date":"2026-01-01"}`,
 			`{"kind":"expense","description":"Despesa ficticia","amount_cents":1800,"date":"2026-01-02"}`,
@@ -111,7 +112,7 @@ func TestPostgresIntegration(t *testing.T) {
 		// Nova conexão e novo handler devem enxergar registros já confirmados.
 		reopened := open(t)
 		defer reopened.Close()
-		h = server.NewHandlerWithRepository(contas.NewPostgresRepository(reopened, 5*time.Second), "postgresql")
+		h = server.NewHandlerWithRepositories(contas.NewPostgresRepository(reopened, 5*time.Second), cartoes.NewPostgresRepository(reopened, 5*time.Second), "postgresql")
 		w := httptest.NewRecorder()
 		h.ServeHTTP(w, httptest.NewRequest("GET", "/api/v1/accounts/"+a.ID+"/balance", nil))
 		var result contas.Account

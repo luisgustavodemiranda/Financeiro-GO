@@ -2,18 +2,20 @@ package server
 
 import (
 	"encoding/json"
+	"financeirogo/internal/cartoes"
 	"financeirogo/internal/config"
 	"financeirogo/internal/contas"
 	"net/http"
 )
 
 func NewHandler() http.Handler {
-	return NewHandlerWithRepository(contas.NewMemoryRepository(), "memoria; dados perdidos ao reiniciar")
+	return NewHandlerWithRepositories(contas.NewMemoryRepository(), cartoes.NewMemoryRepository(), "memoria; dados perdidos ao reiniciar")
 }
 
-func NewHandlerWithRepository(repo contas.Repository, persistence string) http.Handler {
+func NewHandlerWithRepositories(repo contas.Repository, cards cartoes.Repository, persistence string) http.Handler {
 	mux := http.NewServeMux()
 	registerAccountRoutes(mux, contas.NewService(repo))
+	registerCardRoutes(mux, cartoes.NewService(cards))
 	mux.HandleFunc("GET /health", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		_ = json.NewEncoder(w).Encode(map[string]string{"status": "ok"})

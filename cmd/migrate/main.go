@@ -12,10 +12,10 @@ import (
 )
 
 func main() {
-	apply := flag.Bool("apply", false, "aplica a migration 0001; exige autorização prévia do responsável pelo banco")
+	apply := flag.Bool("apply", false, "aplica migrations pendentes; exige autorização prévia do responsável pelo banco")
 	flag.Parse()
 	if !*apply || flag.NArg() != 0 {
-		log.Print("nenhuma alteração executada; revise migrations/0001_accounts_entries.sql e use -apply somente após autorização")
+		log.Print("nenhuma alteração executada; revise migrations/*.sql e use -apply somente após autorização")
 		os.Exit(2)
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
@@ -36,5 +36,5 @@ func main() {
 		log.Print(err)
 		os.Exit(1)
 	}
-	log.Print("migration 0001 aplicada ou já registrada com o mesmo conteúdo")
+	log.Print("migrations aplicadas; histórico conferido e sem versões pendentes")
 }

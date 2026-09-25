@@ -4,7 +4,7 @@
 
 Monólito modular inspirado no Fiscal-GO. Fluxo implementado: HTTP → serviço do módulo → interface de repositório → memória ou adaptador PostgreSQL (pgx). O modo PostgreSQL foi validado com migration aplicada e integração real nos bancos exclusivos do projeto. React + TypeScript permanece futuro. Módulos são adicionados conforme implementados, sem diretórios vazios.
 
-Implementado: `contas` reúne contas e lançamentos, regras, serviço, interface de repositório e adaptadores em memória e PostgreSQL. Lançamentos permanecem no mesmo módulo para manter saldo e registro consistentes. `server` traduz HTTP para chamadas dos serviços; `config` concentra configuração; `database` configura e verifica o pool PostgreSQL. `migrations` contém a migration inicial e seu executor explícito. Futuro: cartões, orçamentos, importações e relatórios.
+Implementado: `contas` reúne contas e lançamentos, regras, serviço, interface de repositório e adaptadores em memória e PostgreSQL. `cartoes` contém o cadastro por nome, com serviço e repositórios; sua integração PostgreSQL ainda aguarda a migration 0002. Lançamentos permanecem no módulo de contas para manter saldo e registro consistentes. `server` traduz HTTP para chamadas dos serviços; `config` concentra configuração; `database` configura e verifica o pool PostgreSQL. `migrations` contém versões SQL e executor incremental explícito. Futuro: compras/faturas, orçamentos, importações e relatórios.
 
 Worker separado para importações demoradas; Redis, armazenamento de arquivos e Docker Compose só entram em fases justificadas. O banco será exclusivo deste projeto. Não utilizar credenciais, tabelas ou arquivos de dados do Fiscal-GO.
 
@@ -33,6 +33,8 @@ Preparação histórica: [fase 3](doc/03-postgresql.md). Aplicação e validaç�
 
 ## Regras para fases futuras
 
+Cadastro e listagem de cartões não movimentam contas, receitas ou despesas. O contrato inicial armazena apenas ID e nome, sem dados de pagamento. Detalhes e limitações em [fase 4, primeiro incremento](doc/06-cadastro-cartoes.md).
+
 - Dinheiro em centavos inteiros (`int64`) na aplicação. Conferir limites e divisão de centavos nas parcelas. Não calcular valores monetários com `float64`.
 - Compra no cartão registra despesa e obrigação. Pagamento da fatura reduz a conta e quita a obrigação; não cria nova despesa.
 - Transferências entre contas não são receitas nem despesas.
@@ -45,4 +47,4 @@ Preparação histórica: [fase 3](doc/03-postgresql.md). Aplicação e validaç�
 - A soma das parcelas precisa coincidir exatamente com o valor total da compra.
 - Previsão mensal não garante saldo antes de cada vencimento.
 
-As regras desta seção são requisitos para fases futuras; somente o subconjunto descrito na fase 2 está implementado. Cartões, transferências e importação não fazem parte da entrega atual.
+As regras financeiras desta seção são requisitos futuros. O cadastro de cartões está implementado, mas compras, faturas, parcelas, pagamentos, transferências e importação ainda não fazem parte da entrega atual.

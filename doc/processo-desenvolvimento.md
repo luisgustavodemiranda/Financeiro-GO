@@ -57,4 +57,4 @@ Não foi medida economia de tokens por sessão: ela depende da tarefa e do conte
 
 ## Próximo incremento
 
-A fase 3 foi validada conforme [05-integracao-postgres-validada.md](05-integracao-postgres-validada.md). Próximo incremento: definir o recorte inicial de cartões/faturas da fase 4 e evoluir o executor de migrations quando houver nova alteração de schema.
+A fase 3 foi validada conforme [05-integracao-postgres-validada.md](05-integracao-postgres-validada.md). Cadastro de cartões e executor incremental foram preparados em [06-cadastro-cartoes.md](06-cadastro-cartoes.md). Próximo passo: aplicar a migration 0002 após autorização e validar a integração real antes de avançar para compras/faturas.
