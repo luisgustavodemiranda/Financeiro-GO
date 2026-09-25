@@ -57,4 +57,4 @@ Não foi medida economia de tokens por sessão: ela depende da tarefa e do conte
 
 ## Próximo incremento
 
-Concluir a fase 3: provisionar os bancos exclusivos, aplicar a migration autorizada e executar os testes de integração real, verificando persistência, rollback e concorrência.
+A fase 3 foi validada conforme [05-integracao-postgres-validada.md](05-integracao-postgres-validada.md). Próximo incremento: definir o recorte inicial de cartões/faturas da fase 4 e evoluir o executor de migrations quando houver nova alteração de schema.

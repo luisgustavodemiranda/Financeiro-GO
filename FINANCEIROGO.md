@@ -2,7 +2,7 @@
 
 ## Arquitetura
 
-Monólito modular inspirado no Fiscal-GO. Fluxo implementado: HTTP → serviço do módulo → interface de repositório → memória ou adaptador PostgreSQL (pgx). O modo PostgreSQL está implementado em código, mas aguarda criação do banco, aplicação autorizada da migration e execução da integração real. React + TypeScript permanece futuro. Módulos são adicionados conforme implementados, sem diretórios vazios.
+Monólito modular inspirado no Fiscal-GO. Fluxo implementado: HTTP → serviço do módulo → interface de repositório → memória ou adaptador PostgreSQL (pgx). O modo PostgreSQL foi validado com migration aplicada e integração real nos bancos exclusivos do projeto. React + TypeScript permanece futuro. Módulos são adicionados conforme implementados, sem diretórios vazios.
 
 Implementado: `contas` reúne contas e lançamentos, regras, serviço, interface de repositório e adaptadores em memória e PostgreSQL. Lançamentos permanecem no mesmo módulo para manter saldo e registro consistentes. `server` traduz HTTP para chamadas dos serviços; `config` concentra configuração; `database` configura e verifica o pool PostgreSQL. `migrations` contém a migration inicial e seu executor explícito. Futuro: cartões, orçamentos, importações e relatórios.
 
@@ -20,7 +20,7 @@ Worker separado para importações demoradas; Redis, armazenamento de arquivos e
 
 Contrato e validações: [fase 2](doc/02-contas-lancamentos.md).
 
-## Persistência preparada na fase 3
+## Persistência validada na fase 3
 
 - `context.Context` é propagado do HTTP até o repositório. Operações PostgreSQL têm timeout.
 - Gravação usa transação e `SELECT ... FOR UPDATE` na conta, mantendo lançamento e saldo juntos. Leitura de conta e histórico usa snapshot consistente com `REPEATABLE READ`.
@@ -29,7 +29,7 @@ Contrato e validações: [fase 2](doc/02-contas-lancamentos.md).
 - São aceitos apenas `financeiro_go` e `financeiro_go_test`. Integração exige o segundo e não aplica migrations.
 - Migration é executada somente pelo comando separado com `-apply`, após autorização. A versão e o checksum ficam registrados no banco.
 
-Código e preparação entregues, operação em banco ainda pendente: [fase 3](doc/03-postgresql.md).
+Preparação histórica: [fase 3](doc/03-postgresql.md). Aplicação e validação reais: [conclusão da fase 3](doc/05-integracao-postgres-validada.md). Usuários exclusivos sem superusuário, migration 0001 aplicada em ambos os bancos e integração executada somente no banco de testes.
 
 ## Regras para fases futuras
 

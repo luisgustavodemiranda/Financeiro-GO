@@ -1,5 +1,7 @@
 # Fase 3 — Preparação da integração real
 
+Registro histórico da preparação. O usuário posteriormente criou os bancos e autorizou habilitar os logins, aplicar a migration e executar os testes. Resultado em [05-integracao-postgres-validada.md](05-integracao-postgres-validada.md).
+
 Etapa iniciada em `feature/fase-3-integracao-postgres`, criada a partir de `develop` após fetch e confirmação de sincronização. Não havia alterações locais no início.
 
 ## Inspeção realizada
@@ -7,6 +9,8 @@ Etapa iniciada em `feature/fase-3-integracao-postgres`, criada a partir de `deve
 A conexão ao banco administrativo `postgres` funcionou. Foram feitas somente consultas SELECT aos catálogos para verificar os nomes dos dois bancos exclusivos do projeto e os privilégios do usuário fornecido. Nenhuma tabela de aplicação ou banco do Fiscal-GO foi acessado.
 
 Resultado: `financeiro_go` e `financeiro_go_test` ainda não existem. A credencial fornecida pertence a um superusuário com permissão para criar bancos e roles. A API recusa superusuário; portanto, usar diretamente essa credencial na aplicação não é o caminho de configuração.
+
+Revalidação em 25/09/2026, durante a preparação com financeiro-banco: conexão confirmada em postgres com o usuário esperado. Consultas somente leitura confirmaram ausência dos dois bancos e também dos roles financeiro_go_app e financeiro_go_test_app; nenhum conflito de nomes foi encontrado naquele momento. Revalidar novamente antes da execução. O bootstrap existente permanece adequado, sem mudanças no SQL.
 
 Host, usuário administrativo e senha não são registrados neste documento, nas fixtures ou no SQL. Não houve execução de DDL ou migration.
 

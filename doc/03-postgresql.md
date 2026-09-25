@@ -1,5 +1,7 @@
 # Fase 3 — Preparação da persistência PostgreSQL
 
+Registro histórico da preparação. A aplicação autorizada da migration e os testes reais posteriores estão em [05-integracao-postgres-validada.md](05-integracao-postgres-validada.md).
+
 ## Estado da entrega
 
 Implementados em código: adaptador pgx v5.11.0, pool de conexões, configuração de persistência, propagação de contexto, transações, migration inicial com executor separado e testes de integração opt-in. O contrato HTTP e os centavos `int64` da fase 2 foram mantidos.
