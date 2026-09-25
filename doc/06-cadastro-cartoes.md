@@ -8,7 +8,7 @@ Branch: `feature/fase-4-cadastro-cartoes`, criada a partir de develop após a in
 
 O nome é obrigatório após remover espaços nas extremidades, possui no máximo 100 caracteres Unicode e não pode conter NUL. Nome vazio, tipo JSON incorreto, corpo inválido ou campos desconhecidos retornam 400. A API não aceita número, CVV ou validade. Erros de repositório retornam 500 sem detalhes internos. Não há GET individual, edição ou exclusão neste incremento.
 
-Cadastrar um cartão não cria conta, receita, despesa nem altera saldo. O repositório em memória protege operações simultâneas e devolve cópias. Reiniciar o processo perde esses cadastros. O adaptador PostgreSQL usa timeout e consultas parametrizadas; sua execução ainda não foi validada nesta etapa.
+Cadastrar um cartão não cria conta, receita, despesa nem altera saldo. O repositório em memória protege operações simultâneas e devolve cópias. Reiniciar o processo perde esses cadastros. O adaptador PostgreSQL usa timeout e consultas parametrizadas; sua integração real foi aprovada após a autorização para aplicar 0002.
 
 ## Caminho da requisição e estudo
 
@@ -19,7 +19,7 @@ Cadastrar um cartão não cria conta, receita, despesa nem altera saldo. O repos
 
 Leia primeiro o serviço e seus testes, depois o handler e o adaptador. Nenhuma regra de dinheiro nova foi introduzida.
 
-## Migration preparada, não executada
+## Migration aplicada após autorização
 
 `migrations/0002_cards.sql` cria somente `financeiro.cards`, com ID bigint identity, nome obrigatório e CHECK do limite de caracteres. Não altera contas ou lançamentos. A migration 0001 permanece byte a byte sem alterações no Git e mantém seu checksum normalizado.
 
@@ -29,7 +29,7 @@ O executor agora incorpora os arquivos SQL da raiz de migrations, em ordem NNNN_
 
 Apply adquire bloqueio consultivo, verifica o histórico e executa somente versões pendentes numa transação única com seus registros de versão. Num banco existente com 0001, aplica apenas 0002. Num banco sem schema, aplica 0001 e 0002. Falha no lote impede seu commit; falha de conexão no commit exige inspecionar o estado antes de repetir. O executor suporta SQL transacional; operações como CREATE DATABASE continuam fora dele.
 
-Check é somente leitura e exige todas as versões do binário. Por isso, esta versão da API **recusa iniciar em PostgreSQL enquanto 0002 estiver pendente**; o modo memória permanece disponível. Essa recusa foi verificada contra o banco da aplicação sem alteração do schema. Não iniciar esta versão persistente antes da migration autorizada. Após aplicar 0002, binários antigos que reconhecem somente 0001 recusam o histórico novo; não há downgrade automático.
+Check é somente leitura e exige todas as versões do binário. Esta versão da API recusa iniciar em PostgreSQL enquanto 0002 estiver pendente; essa recusa foi verificada antes da aplicação. Depois da autorização, 0002 foi aplicada em financeiro_go e financeiro_go_test e a inicialização da API PostgreSQL foi confirmada. Binários antigos que reconhecem somente 0001 recusam o histórico novo; não há downgrade automático.
 
 ## Experimentar agora em PowerShell
 
@@ -47,10 +47,14 @@ Invoke-RestMethod -Method Post -Uri "$base/cards" -ContentType 'application/json
 Invoke-RestMethod "$base/cards"
 ```
 
-## Validação e conclusão pendente
+## Validação concluída
 
 Executados: gofmt nos arquivos Go alterados, `go test ./...`, `go vet ./...` e `go build ./...`, todos aprovados. Testes cobrem nomes, limite Unicode, cancelamento, cópias, IDs distintos, cadastros concorrentes, contrato HTTP, saldo de conta preservado e erro interno protegido. Testes do executor cobrem planejamento incremental, ausência de reaplicação de 0001, histórico divergente e estabilidade do checksum.
 
-`TestPostgresCardsIntegration` foi preparado para verificar cadastro via HTTP, persistência por outra conexão e constraint SQL. Ele exige `financeiro_go_test` já migrado, limpa apenas seus próprios IDs e não aplica migrations. Sem configuração, os testes de integração são SKIP; isso não é validação real. Execução SQL do novo executor, upgrade 0001→0002 e cartões persistentes ainda estão pendentes.
+`TestPostgresCardsIntegration` passou contra financeiro_go_test: cadastro via HTTP, persistência por outra conexão e constraint SQL. Ele limpa apenas seus próprios IDs e não aplica migrations. Os testes existentes de contas também passaram no banco atualizado, incluindo rollback, limites de saldo, concorrência e cancelamento.
 
-Após autorização específica: aplicar 0002 nos dois bancos com `cmd/migrate -apply`, conferir catálogo/histórico e executar a suíte com integração real, inclusive os testes de contas existentes. Só então concluir este incremento e deixar o PR pronto para revisão. Nenhuma migration foi executada durante esta preparação. A fase 4 completa continua aberta até compras, faturas, parcelas e pagamentos.
+Em 25/09/2026, após autorização explícita, a inspeção confirmou versão 0001 e ausência de cards nos dois bancos. O executor aplicou somente 0002, preservando o histórico anterior. A verificação posterior confirmou a tabela e duas versões registradas com checksums válidos. A API iniciou no modo PostgreSQL e GET /api/v1/cards funcionou no banco principal, sem inserir dados nele.
+
+A primeira execução completa identificou que o teste de configuração sem banco herdava PGDATABASE usado na inspeção. O teste foi isolado com t.Setenv; a configuração da aplicação não foi alterada. A suíte completa foi repetida com PGDATABASE definido e integração habilitada: aprovada sem SKIP, assim como vet e build. O CI remoto não acessa esse banco local; sua evidência é distinta da integração real executada aqui.
+
+O primeiro incremento está concluído. A fase 4 completa continua aberta até compras, faturas, parcelas e pagamentos. SQL 0001 e 0002 aplicados devem permanecer imutáveis.

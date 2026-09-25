@@ -6,6 +6,8 @@ import (
 )
 
 func TestParseConfig(t *testing.T) {
+	// O caso sem banco testa ausência explícita, sem herdar o destino do terminal.
+	t.Setenv("PGDATABASE", "")
 	for _, tc := range []struct {
 		name, raw string
 		valid     bool

@@ -13,11 +13,11 @@
 - [ ] Fase 4: cartões, faturas, pagamentos e parcelas sem duplicidade.
   - [x] Cadastro e listagem de cartões por nome, serviço, repositórios e testes locais.
   - [x] Executor incremental preparado, preservando o checksum da migration 0001; migration 0002 de cartões criada.
-  - [ ] Aplicar 0002 com autorização específica e validar cartões e upgrade em PostgreSQL real.
+  - [x] Migration 0002 aplicada com autorização específica nos dois bancos; cartões, upgrade e regressão de contas validados em PostgreSQL real.
   - [ ] Compras, faturas, parcelas e pagamentos sem duplicar despesa.
 - [ ] Fase 5: orçamento mensal e projeções com valores previstos e realizados.
 - [ ] Fase 6: interface React + TypeScript e dashboard.
 - [ ] Fase 7: importação CSV com prévia, validação e controle de reimportação.
 - [ ] Fase 8: autenticação, isolamento familiar, backup e preparação para publicação.
 
-Cada incremento termina com testes e documentação. Fase 3 validada em `doc/05-integracao-postgres-validada.md`. O primeiro incremento da fase 4 está em `doc/06-cadastro-cartoes.md`: cadastro/listagem e executor incremental implementados, mas aplicação de 0002 e integração real ainda pendentes de autorização. O próximo passo é validar essa evolução antes de iniciar compras e faturas.
+Cada incremento termina com testes e documentação. Fase 3 validada em `doc/05-integracao-postgres-validada.md`. O primeiro incremento da fase 4 está em `doc/06-cadastro-cartoes.md`: cadastro/listagem e executor incremental validados, com 0002 aplicada e integração real aprovada. Próximo incremento: definir e testar compras e faturas sem duplicar despesas, antes de implementar pagamentos.
