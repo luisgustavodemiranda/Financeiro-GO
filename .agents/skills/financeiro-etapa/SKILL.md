@@ -1,6 +1,6 @@
 ---
 name: financeiro-etapa
-description: Iniciar ou retomar uma etapa do Financeiro-GO em feature/* a partir de develop, com implementação incremental, testes e documentação. Use quando o usuário pedir uma nova etapa, feature ou continuação do plano deste projeto.
+description: Iniciar ou retomar uma etapa do Financeiro-GO em feature/* a partir de develop, implementar, testar, documentar, fazer commit, push e abrir PR para revisão em develop. Use para novas etapas ou continuação do plano deste projeto; nunca faz merge automático.
 ---
 
 # Etapas do Financeiro-GO
@@ -28,11 +28,15 @@ Antes de entregar código, execute gofmt nos arquivos Go alterados, `go test ./.
 
 Documente o incremento em doc/ e atualize o plano apenas com resultados comprovados. Explique como executar, o caminho da requisição, os arquivos para estudar e o próximo incremento.
 
-## Publicar quando autorizado
+## Publicar e deixar PR para revisão
 
-Respeite a autorização já existente na conversa, sem pedir confirmações repetidas para ações cobertas por ela. Invocar esta skill não concede por si só permissão para commit, push, abertura de PR, merge ou execução de migrations. Conclua a preparação revisável antes de solicitar uma autorização que realmente falte.
+Por autorização permanente do usuário para este projeto, invocar financeiro-etapa autoriza criar ou retomar a feature, implementar o incremento, testar, documentar, fazer commit, push da feature e abrir ou atualizar um PR para develop. Execute esse fluxo sem pedir confirmação intermediária para essas ações. Um pedido explícito de somente análise, planejamento, trabalho local ou outra restrição reduz o escopo e prevalece sobre esse padrão.
 
-Quando commit estiver autorizado, revise os arquivos e faça staging explícito, sem `git add .`. Use mensagens curtas em Conventional Commits. Quando publicação da feature e PR estiverem autorizados, envie a feature e abra o PR com base `develop`, descrevendo comportamento, testes e limitações. Verifique os checks do commit publicado; não trate testes locais como CI remoto aprovado.
+Revise os arquivos e faça staging explícito apenas das mudanças da etapa, sem `git add .` e sem incorporar trabalho alheio. Use mensagens curtas em Conventional Commits. Envie a feature para o remoto do Financeiro-GO e abra o PR com base develop, descrevendo o comportamento final, testes e limitações. Antes de criar o PR, procure um já aberto para a mesma feature e base; atualize-o em vez de duplicar. Se não houver mudanças, não crie commit vazio nem PR sem diff.
+
+Verifique os checks do commit publicado; não trate testes locais como CI remoto aprovado. Corrija falhas ligadas à etapa e envie os ajustes. Se uma dependência externa, aprovação de banco ou falha não resolvida impedir a conclusão, publique somente o trabalho coerente e revisável, deixe o PR em rascunho e explique a pendência. Não declare a etapa concluída. Sem bloqueios e com os checks exigidos aprovados, deixe o PR pronto para revisão, sem merge.
+
+Criação de bancos, usuários, execução de migrations e outras alterações de banco continuam exigindo autorização específica. Prepare os arquivos revisáveis antes de solicitar essa autorização. A autorização automática desta skill cobre o fluxo de desenvolvimento e publicação da feature, não mudanças no banco.
 
 Merge exige autorização explícita; nunca o execute só porque o CI passou. A promoção de develop para main é uma decisão de versão separada. Não exclua branches remotas sem autorização.
 
