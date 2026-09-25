@@ -1,0 +1,11 @@
+# Segredos e dados pessoais
+.env
+.env.*
+!.env.example
+*.pdf
+*.csv
+*.xlsx
+/uploads/
+/backups/
+/bin/
+coverage.out
