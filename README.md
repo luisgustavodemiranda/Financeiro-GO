@@ -10,7 +10,7 @@ O projeto explora monólito modular, separação entre handlers HTTP, serviços 
 - Registro de receitas e despesas por conta.
 - Consulta de lançamentos e saldo, com proteção contra overflow de `int64`.
 - API executável em memória, sem necessidade de banco para experimentar.
-- Adaptador PostgreSQL e migrations preparados; validação em banco real pendente.
+- Persistência PostgreSQL com migrations e integração validada em banco real.
 
 ## Arquitetura
 
@@ -24,7 +24,7 @@ O serviço concentra as regras financeiras; cada repositório implementa o armaz
 
 ## Estado atual
 
-API HTTP local com configuração validada, encerramento seguro, contas, receitas, despesas e saldo. O padrão continua em memória: **todos os dados desaparecem ao reiniciar**. O adaptador PostgreSQL, a migration inicial e os testes de integração estão preparados. Banco ainda não criado e integração real ainda não executada. Frontend permanece futuro.
+API HTTP local com configuração validada, encerramento seguro, contas, receitas, despesas e saldo. O padrão continua em memória: **todos os dados desaparecem ao reiniciar**. O modo PostgreSQL foi validado com bancos exclusivos, migration aplicada e testes de integração reais. Frontend permanece futuro.
 
 Arquitetura de referência: Fiscal-GO. Monólito modular em Go, com pgx v5 para PostgreSQL. React + TypeScript estão planejados. Worker e Redis entram quando houver importações assíncronas.
 
@@ -48,6 +48,8 @@ go run ./cmd/financeiro
 O arquivo `.env.example` documenta variáveis; arquivos `.env` ainda não são carregados automaticamente. O servidor escuta somente no computador local por padrão.
 
 Para PostgreSQL, consulte [a preparação da fase 3](doc/03-postgresql.md). `PERSISTENCE=postgres` exige `FINANCEIRO_DATABASE_URL` ou variáveis `DB_*`, banco exclusivo e migration previamente aplicada com autorização. A API nunca aplica migrations ao iniciar e nunca troca silenciosamente PostgreSQL por memória quando há erro.
+
+O ambiente local provisionado tem instruções de uso e evidências na [conclusão da fase 3](doc/05-integracao-postgres-validada.md). O arquivo local de credenciais protegidas não acompanha o repositório; quem clonar o projeto deve configurar seu próprio ambiente.
 
 ## Validar
 
