@@ -4,7 +4,7 @@
 
 Monólito modular inspirado no Fiscal-GO. Fluxo implementado: HTTP → serviço do módulo → interface de repositório → memória ou adaptador PostgreSQL (pgx). O modo PostgreSQL foi validado com migration aplicada e integração real nos bancos exclusivos do projeto. React + TypeScript permanece futuro. Módulos são adicionados conforme implementados, sem diretórios vazios.
 
-Implementado: `contas` reúne contas e lançamentos, regras, serviço, interface de repositório e adaptadores em memória e PostgreSQL. `cartoes` contém o cadastro por nome, com serviço e repositórios; sua integração PostgreSQL foi validada após aplicar a migration 0002. Lançamentos permanecem no módulo de contas para manter saldo e registro consistentes. `server` traduz HTTP para chamadas dos serviços; `config` concentra configuração; `database` configura e verifica o pool PostgreSQL. `migrations` contém versões SQL e executor incremental explícito. Futuro: compras/faturas, orçamentos, importações e relatórios.
+Implementado: `contas` reúne contas e lançamentos, regras, serviço, interface de repositório e adaptadores em memória e PostgreSQL. `cartoes` contém o cadastro por nome, com integração PostgreSQL validada após 0002, e compras/faturas simples validadas em memória, com persistência 0003 ainda pendente de validação real. Lançamentos permanecem no módulo de contas para manter saldo e registro consistentes. `server` traduz HTTP para chamadas dos serviços; `config` concentra configuração; `database` configura e verifica o pool PostgreSQL. `migrations` contém versões SQL e executor incremental explícito. Futuro: pagamentos, parcelas, orçamentos, importações e relatórios.
 
 Worker separado para importações demoradas; Redis, armazenamento de arquivos e Docker Compose só entram em fases justificadas. O banco será exclusivo deste projeto. Não utilizar credenciais, tabelas ou arquivos de dados do Fiscal-GO.
 
@@ -31,6 +31,12 @@ Contrato e validações: [fase 2](doc/02-contas-lancamentos.md).
 
 Preparação histórica: [fase 3](doc/03-postgresql.md). Aplicação e validação reais: [conclusão da fase 3](doc/05-integracao-postgres-validada.md). Usuários exclusivos sem superusuário, migration 0001 aplicada em ambos os bancos e integração executada somente no banco de testes.
 
+## Compras e faturas: incremento atual
+
+O módulo `cartoes` também contém compras e faturas com períodos explícitos, vencimento, total em centavos e fechamento manual. Serviços e HTTP foram validados em memória. O adaptador PostgreSQL e a migration 0003 estão preparados, com integração real pendente de autorização para aplicar o SQL. Contrato e regras em [compras e faturas](doc/07-compras-faturas.md).
+
+A compra reconhece despesa no cartão e obrigação pelo mesmo valor, sem chamar o serviço de despesas bancárias. A data da compra é sua referência; vencimento não é data de pagamento. Ainda não há relatório consolidado nem pagamento de fatura. No futuro, o pagamento deverá reduzir a conta e quitar a obrigação sem reconhecer outra despesa.
+
 ## Regras para fases futuras
 
 Cadastro e listagem de cartões não movimentam contas, receitas ou despesas. O contrato inicial armazena apenas ID e nome, sem dados de pagamento. Detalhes e limitações em [fase 4, primeiro incremento](doc/06-cadastro-cartoes.md).
@@ -47,4 +53,4 @@ Cadastro e listagem de cartões não movimentam contas, receitas ou despesas. O 
 - A soma das parcelas precisa coincidir exatamente com o valor total da compra.
 - Previsão mensal não garante saldo antes de cada vencimento.
 
-As regras financeiras desta seção são requisitos futuros. O cadastro de cartões está implementado, mas compras, faturas, parcelas, pagamentos, transferências e importação ainda não fazem parte da entrega atual.
+Parcelas, pagamentos, transferências e importação permanecem futuros. Compras e faturas simples estão disponíveis em memória; a persistência desse incremento ainda depende da aplicação de 0003 e validação real.

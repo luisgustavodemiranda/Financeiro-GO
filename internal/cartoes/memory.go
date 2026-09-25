@@ -7,8 +7,9 @@ import (
 )
 
 type MemoryRepository struct {
-	mu    sync.RWMutex
-	cards []Card
+	mu       sync.RWMutex
+	cards    []Card
+	invoices []Invoice
 }
 
 func NewMemoryRepository() *MemoryRepository { return &MemoryRepository{} }

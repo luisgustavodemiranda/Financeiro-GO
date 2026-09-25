@@ -16,13 +16,14 @@ func NewHandlerWithRepositories(repo contas.Repository, cards cartoes.Repository
 	mux := http.NewServeMux()
 	registerAccountRoutes(mux, contas.NewService(repo))
 	registerCardRoutes(mux, cartoes.NewService(cards))
+	registerInvoiceRoutes(mux, cartoes.NewService(cards))
 	mux.HandleFunc("GET /health", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		_ = json.NewEncoder(w).Encode(map[string]string{"status": "ok"})
 	})
 	mux.HandleFunc("GET /api/v1/status", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
-		_ = json.NewEncoder(w).Encode(map[string]string{"application": "Financeiro-GO", "phase": "contas e lancamentos", "persistence": persistence})
+		_ = json.NewEncoder(w).Encode(map[string]string{"application": "Financeiro-GO", "phase": "contas, cartoes, compras e faturas", "persistence": persistence})
 	})
 	return mux
 }
