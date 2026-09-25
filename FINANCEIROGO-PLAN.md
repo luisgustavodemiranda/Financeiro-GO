@@ -17,11 +17,11 @@
   - [x] Regras de faturas com datas explícitas, compras sem movimentar contas e fechamento manual definidas.
   - [x] Serviços, repositório em memória e endpoints de faturas/compras/fechamento implementados e testados.
   - [x] Adaptador PostgreSQL, migration 0003 e testes de integração preparados.
-  - [ ] Aplicar 0003 após autorização e validar faturas/compras em PostgreSQL real.
+  - [x] Migration 0003 aplicada com autorização nos dois bancos e integração real de faturas/compras aprovada.
   - [ ] Parcelas e pagamentos sem duplicar despesa.
 - [ ] Fase 5: orçamento mensal e projeções com valores previstos e realizados.
 - [ ] Fase 6: interface React + TypeScript e dashboard.
 - [ ] Fase 7: importação CSV com prévia, validação e controle de reimportação.
 - [ ] Fase 8: autenticação, isolamento familiar, backup e preparação para publicação.
 
-Cada incremento termina com testes e documentação. Fase 3 validada em `doc/05-integracao-postgres-validada.md`. Cadastro/listagem de cartões e executor incremental validados em `doc/06-cadastro-cartoes.md`. Compras e faturas estão em `doc/07-compras-faturas.md`: memória validada; migration 0003 e integração real pendentes de autorização. Depois, definir o pagamento integral sem duplicar a despesa.
+Cada incremento termina com testes e documentação. Fase 3 validada em `doc/05-integracao-postgres-validada.md`. Cadastro/listagem de cartões e executor incremental validados em `doc/06-cadastro-cartoes.md`. Compras e faturas estão em `doc/07-compras-faturas.md`: memória e PostgreSQL validados após aplicação autorizada de 0003. Depois, definir o pagamento integral sem duplicar a despesa.
