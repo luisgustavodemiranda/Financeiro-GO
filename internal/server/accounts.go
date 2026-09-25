@@ -3,6 +3,7 @@ package server
 import (
 	"encoding/json"
 	"errors"
+	"financeirogo/internal/cartoes"
 	"financeirogo/internal/contas"
 	"io"
 	"net/http"
@@ -21,7 +22,7 @@ func writeError(w http.ResponseWriter, err error) {
 	case errors.Is(err, contas.ErrNotFound):
 		status = http.StatusNotFound
 		message = err.Error()
-	case errors.Is(err, contas.ErrInvalid):
+	case errors.Is(err, contas.ErrInvalid), errors.Is(err, cartoes.ErrInvalid):
 		status = http.StatusBadRequest
 		message = err.Error()
 	case errors.Is(err, contas.ErrOverflow):

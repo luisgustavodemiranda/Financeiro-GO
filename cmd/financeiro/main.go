@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"errors"
+	"financeirogo/internal/cartoes"
 	"financeirogo/internal/config"
 	"financeirogo/internal/contas"
 	"financeirogo/internal/database"
@@ -23,6 +24,7 @@ func run() error {
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
 	var repo contas.Repository = contas.NewMemoryRepository()
+	var cards cartoes.Repository = cartoes.NewMemoryRepository()
 	persistence := "memoria; dados perdidos ao reiniciar"
 	if cfg.Persistence == "postgres" {
 		startup, cancel := context.WithTimeout(ctx, cfg.DatabaseTimeout)
@@ -38,9 +40,10 @@ func run() error {
 			return err
 		}
 		repo = contas.NewPostgresRepository(pool, cfg.DatabaseTimeout)
+		cards = cartoes.NewPostgresRepository(pool, cfg.DatabaseTimeout)
 		persistence = "postgresql"
 	}
-	srv := server.New(cfg, server.NewHandlerWithRepository(repo, persistence))
+	srv := server.New(cfg, server.NewHandlerWithRepositories(repo, cards, persistence))
 	done := make(chan error, 1)
 	go func() {
 		log.Printf("Financeiro-GO disponível em http://%s", cfg.Address)
