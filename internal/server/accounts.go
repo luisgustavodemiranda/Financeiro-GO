@@ -19,13 +19,13 @@ func writeError(w http.ResponseWriter, err error) {
 	status := http.StatusInternalServerError
 	message := "erro interno"
 	switch {
-	case errors.Is(err, contas.ErrNotFound):
+	case errors.Is(err, contas.ErrNotFound), errors.Is(err, cartoes.ErrNotFound):
 		status = http.StatusNotFound
 		message = err.Error()
-	case errors.Is(err, contas.ErrInvalid), errors.Is(err, cartoes.ErrInvalid):
+	case errors.Is(err, contas.ErrInvalid), errors.Is(err, cartoes.ErrInvalid), errors.Is(err, cartoes.ErrInvoiceInvalid):
 		status = http.StatusBadRequest
 		message = err.Error()
-	case errors.Is(err, contas.ErrOverflow):
+	case errors.Is(err, contas.ErrOverflow), errors.Is(err, cartoes.ErrOverflow), errors.Is(err, cartoes.ErrConflict):
 		status = http.StatusConflict
 		message = err.Error()
 	}

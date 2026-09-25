@@ -14,10 +14,14 @@
   - [x] Cadastro e listagem de cartões por nome, serviço, repositórios e testes locais.
   - [x] Executor incremental preparado, preservando o checksum da migration 0001; migration 0002 de cartões criada.
   - [x] Migration 0002 aplicada com autorização específica nos dois bancos; cartões, upgrade e regressão de contas validados em PostgreSQL real.
-  - [ ] Compras, faturas, parcelas e pagamentos sem duplicar despesa.
+  - [x] Regras de faturas com datas explícitas, compras sem movimentar contas e fechamento manual definidas.
+  - [x] Serviços, repositório em memória e endpoints de faturas/compras/fechamento implementados e testados.
+  - [x] Adaptador PostgreSQL, migration 0003 e testes de integração preparados.
+  - [ ] Aplicar 0003 após autorização e validar faturas/compras em PostgreSQL real.
+  - [ ] Parcelas e pagamentos sem duplicar despesa.
 - [ ] Fase 5: orçamento mensal e projeções com valores previstos e realizados.
 - [ ] Fase 6: interface React + TypeScript e dashboard.
 - [ ] Fase 7: importação CSV com prévia, validação e controle de reimportação.
 - [ ] Fase 8: autenticação, isolamento familiar, backup e preparação para publicação.
 
-Cada incremento termina com testes e documentação. Fase 3 validada em `doc/05-integracao-postgres-validada.md`. O primeiro incremento da fase 4 está em `doc/06-cadastro-cartoes.md`: cadastro/listagem e executor incremental validados, com 0002 aplicada e integração real aprovada. Próximo incremento: definir e testar compras e faturas sem duplicar despesas, antes de implementar pagamentos.
+Cada incremento termina com testes e documentação. Fase 3 validada em `doc/05-integracao-postgres-validada.md`. Cadastro/listagem de cartões e executor incremental validados em `doc/06-cadastro-cartoes.md`. Compras e faturas estão em `doc/07-compras-faturas.md`: memória validada; migration 0003 e integração real pendentes de autorização. Depois, definir o pagamento integral sem duplicar a despesa.

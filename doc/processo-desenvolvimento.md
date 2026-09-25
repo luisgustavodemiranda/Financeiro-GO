@@ -43,7 +43,7 @@ A skill [financeiro-banco](../.agents/skills/financeiro-banco/SKILL.md) concentr
 Use $financeiro-banco para revisar o provisionamento preparado e suas pendências.
 ```
 
-Para alterações futuras, a skill exige inspecionar o schema real e preservar migrations aplicadas. O executor atual suporta apenas 0001; a skill orienta evoluí-lo e testá-lo antes de uma migration incremental adicional. Nenhuma nova capacidade do executor foi implementada por criar a skill.
+Para alterações futuras, a skill exige inspecionar o schema real e preservar migrations aplicadas. O executor passou a suportar versões incrementais na etapa de cadastro de cartões; essa capacidade foi implementada e testada em código, separadamente da criação da skill.
 
 ## Revisão de eficiência do processo
 
@@ -57,4 +57,4 @@ Não foi medida economia de tokens por sessão: ela depende da tarefa e do conte
 
 ## Próximo incremento
 
-A fase 3 foi validada conforme [05-integracao-postgres-validada.md](05-integracao-postgres-validada.md). Cadastro de cartões e executor incremental foram validados em [06-cadastro-cartoes.md](06-cadastro-cartoes.md), com migration 0002 aplicada após autorização. Próximo passo: delimitar compras/faturas e suas regras financeiras.
+A fase 3 foi validada conforme [05-integracao-postgres-validada.md](05-integracao-postgres-validada.md). Cadastro de cartões e executor incremental foram validados em [06-cadastro-cartoes.md](06-cadastro-cartoes.md). O incremento de [compras e faturas](07-compras-faturas.md) está validado em memória; falta autorizar a aplicação da migration 0003 e executar a integração real. Depois, definir pagamento integral sem duplicidade de despesa.

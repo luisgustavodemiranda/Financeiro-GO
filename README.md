@@ -12,6 +12,7 @@ O projeto explora monólito modular, separação entre handlers HTTP, serviços 
 - API executável em memória, sem necessidade de banco para experimentar.
 - Persistência PostgreSQL com migrations e integração validada em banco real.
 - Cadastro e listagem de cartões por nome, em memória ou PostgreSQL, com integração real validada.
+- Faturas com datas explícitas, compras em centavos, total e fechamento manual, validados em memória. Adaptador PostgreSQL preparado; aplicação da migration 0003 e integração real pendentes.
 
 ## Arquitetura
 
@@ -53,6 +54,8 @@ Para PostgreSQL, consulte [a preparação da fase 3](doc/03-postgresql.md). `PER
 O ambiente local provisionado tem instruções de uso e evidências na [conclusão da fase 3](doc/05-integracao-postgres-validada.md). O arquivo local de credenciais protegidas não acompanha o repositório; quem clonar o projeto deve configurar seu próprio ambiente.
 
 **Primeiro incremento da fase 4 validado:** migration 0002 aplicada nos dois bancos locais e integração de cartões aprovada. Veja [cadastro de cartões](doc/06-cadastro-cartoes.md). Novas instalações precisam aplicar as migrations com autorização antes de iniciar no modo PostgreSQL.
+
+**Incremento atual:** [compras e faturas](doc/07-compras-faturas.md). Esta versão exige também a migration 0003 para iniciar no modo PostgreSQL; ela foi preparada, mas ainda não aplicada nos bancos locais. Em memória, o novo fluxo pode ser experimentado agora.
 
 ## Validar
 

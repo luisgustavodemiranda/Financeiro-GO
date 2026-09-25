@@ -1,4 +1,4 @@
-// Package cartoes mantém o cadastro de cartões, sem movimentações financeiras.
+// Package cartoes reúne cartões, compras e faturas sem movimentar contas bancárias.
 package cartoes
 
 import (
@@ -18,6 +18,11 @@ type Card struct {
 type Repository interface {
 	Create(context.Context, Card) (Card, error)
 	List(context.Context) ([]Card, error)
+	CreateInvoice(context.Context, Invoice) (Invoice, error)
+	ListInvoices(context.Context, string) ([]Invoice, error)
+	GetInvoice(context.Context, string, string) (Invoice, error)
+	// UpdateInvoice serializa compra e fechamento e só grava se change tiver sucesso.
+	UpdateInvoice(context.Context, string, string, func(*Invoice) error) (Invoice, error)
 }
 
 type Service struct{ repo Repository }
