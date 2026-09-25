@@ -37,6 +37,24 @@ Antes de publicar, revisar os arquivos incluídos e o `.gitignore`. Nunca inclui
 
 Os bancos são exclusivos do Financeiro-GO. Criação e execução de migrations exigem autorização específica; não fazem parte de uma autorização de commit ou publicação. O Fiscal-GO permanece apenas como referência de arquitetura.
 
+A skill [financeiro-banco](../.agents/skills/financeiro-banco/SKILL.md) concentra inspeção, criação inicial, evolução de schema/permissões, migrations e validação. financeiro-etapa a consulta somente quando necessário e mantém a mesma feature/PR. Chamada isolada da skill de banco permite análise e preparação; uma ordem explícita de executar uma operação definida autoriza essa operação sem confirmação repetida.
+
+```text
+Use $financeiro-banco para revisar o provisionamento preparado e suas pendências.
+```
+
+Para alterações futuras, a skill exige inspecionar o schema real e preservar migrations aplicadas. O executor atual suporta apenas 0001; a skill orienta evoluí-lo e testá-lo antes de uma migration incremental adicional. Nenhuma nova capacidade do executor foi implementada por criar a skill.
+
+## Revisão de eficiência do processo
+
+As regras comuns de contexto e verificação ficam no AGENTS.md. financeiro-etapa foi encurtada, e detalhes de banco são carregados somente quando o assunto exige. A revisão reduziu repetição entre instruções, não removeu validação financeira ou controle de mudanças no banco.
+
+Na execução, reaproveitar fontes lidas enquanto a versão for válida; buscar trechos com rg; agrupar consultas independentes; evitar imprimir documentos e logs inteiros. Reutilizar checks do mesmo código e CI do mesmo SHA; repetir quando a mudança, falha ou dúvida justificar. Para Markdown apenas, revisar diff, links e skills sem repetir a suíte Go local; o CI continua rodando no push.
+
+Ambas as skills passaram no quick_validate.py. A revisão de instruções cobriu criação inicial sem autorização, autorização já concedida, migration futura com executor ainda limitado a 0001, retomada de feature existente e mudança somente documental. Essa revisão não é um teste executado contra PostgreSQL. Não houve acesso ou alteração de banco nesta revisão.
+
+Não foi medida economia de tokens por sessão: ela depende da tarefa e do contexto. O ganho esperado é reduzir leituras e saídas redundantes. Um resumo de continuidade deve registrar apenas branch/PR, resultado, checks e pendências no documento da etapa, sem criar cópias do plano ou do schema.
+
 ## Próximo incremento
 
 Concluir a fase 3: provisionar os bancos exclusivos, aplicar a migration autorizada e executar os testes de integração real, verificando persistência, rollback e concorrência.
