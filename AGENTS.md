@@ -9,6 +9,7 @@
 - Não alterar o Fiscal-GO ou seu banco. Banco deste projeto é independente.
 - Mudanças no banco usam migrations. Executar migrations somente com autorização do usuário.
 - Preservar alterações existentes. Não publicar, fazer push ou merge sem autorização.
+- Invocar financeiro-etapa autoriza criar/retomar feature, implementar, testar, documentar, fazer commit, push e abrir/atualizar PR para develop, sem confirmação intermediária. Restrições explícitas do pedido prevalecem; banco e merge continuam exigindo autorização específica.
 - Usar main para versões estáveis e develop para integração. Cada etapa usa feature/<etapa>, criada a partir de develop; PRs de feature têm develop como destino.
 - Para iniciar ou retomar etapas, seguir .agents/skills/financeiro-etapa/SKILL.md. Não implementar novas etapas diretamente em main ou develop.
 - Antes de entregar código: gofmt nos arquivos alterados, go test ./..., go vet ./... e go build ./.... Reportar limitações reais.

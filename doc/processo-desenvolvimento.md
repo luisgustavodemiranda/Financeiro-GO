@@ -10,7 +10,7 @@ Este projeto é desenvolvido como estudo em Go e portfólio público. O plano di
 4. Testar regras financeiras, erros e contratos HTTP relevantes.
 5. Executar `gofmt`, `go test ./...`, `go vet ./...` e `go build ./...`.
 6. Documentar resultados reais, limitações e próximo passo em `doc/`.
-7. Revisar o diff e registrar o incremento no Git; commit e publicação dependem do escopo autorizado na conversa.
+7. Ao invocar financeiro-etapa, revisar o diff, fazer commit e push da feature e abrir/atualizar PR para develop automaticamente, deixando a revisão e o merge para o usuário.
 
 ## Git e revisão
 
@@ -27,7 +27,9 @@ Use $financeiro-etapa para iniciar a etapa fase-3-integracao-postgres.
 Verifique as pendências do plano e prepare os próximos passos sem executar migrations.
 ```
 
-A criação da feature local faz parte de iniciar uma etapa. Commit, push, abertura de PR e merge respeitam o escopo autorizado na conversa; invocar a skill não concede autorização automática para essas ações nem para alterações de banco. Não se repete uma confirmação que já tenha sido concedida. Uma árvore com mudanças locais deve ser preservada e compreendida antes de trocar de branch.
+Por autorização permanente do usuário, cada chamada de financeiro-etapa cobre criar/retomar feature, implementar, testar, documentar, fazer commit, push e abrir/atualizar PR com destino develop, sem confirmações intermediárias. Se já houver PR da feature, ele será atualizado. Não criar commits vazios nem PR duplicado. Pedidos de somente análise ou trabalho local prevalecem sobre esse padrão. Uma árvore com mudanças locais deve ser preservada e compreendida antes de trocar de branch.
+
+O PR fica pronto para revisão quando os checks exigidos passam e o incremento está concluído. Se restar bloqueio externo, como autorização para migrations, publicar apenas uma preparação coerente e deixar o PR em rascunho, com a pendência explícita. Merge e alterações de banco continuam exigindo autorização específica; a skill nunca faz merge automático.
 
 Antes de publicar, revisar os arquivos incluídos e o `.gitignore`. Nunca incluir `.env`, senhas, faturas ou dados pessoais. O `.env.example` contém somente estrutura de configuração, sem credenciais reais. A API local não deve ser apresentada como serviço público pronto para produção: autenticação, frontend e validação operacional ainda são pendências do plano.
 
