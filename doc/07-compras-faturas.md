@@ -1,6 +1,6 @@
 # Fase 4 — Compras e faturas com datas explícitas
 
-Branch: `feature/fase-4-compras-faturas`, criada de develop após o merge do PR #4. Implementação e testes locais concluídos; aplicação da migration 0003 e integração real pendentes. Este documento distingue a implementação preparada da validação em banco.
+Branch: `feature/fase-4-compras-faturas`, criada de develop após o merge do PR #4. [PR #5](https://github.com/luisgustavodemiranda/Financeiro-GO/pull/5) em rascunho. Implementação e testes locais concluídos; aplicação da migration 0003 e integração real pendentes. Este documento distingue a implementação preparada da validação em banco.
 
 ## Regras acordadas e comportamento
 
