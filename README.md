@@ -16,6 +16,8 @@ O projeto explora monólito modular, separação entre handlers HTTP, serviços 
 
 ## Arquitetura
 
+Pagamento integral de fatura disponível em memória, sem duplicar despesa. Adaptador PostgreSQL e migration 0004 preparados, ainda pendentes de aplicação e integração real. Veja [pagamento de fatura](doc/08-pagamento-fatura.md) para regras, exemplos PowerShell e ordem de estudo. **Esta versão exige 0004 para iniciar em PostgreSQL.**
+
 ```text
 Requisição HTTP → Handler → Serviço → Interface de repositório
                                         ├─ Memória

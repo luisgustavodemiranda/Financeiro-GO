@@ -40,7 +40,7 @@ func TestCatalogAndExistingChecksum(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(known) != 3 || known[2].version != 3 {
+	if len(known) != 4 || known[3].version != 4 {
 		t.Fatal("catálogo inesperado")
 	}
 	// Hash conferido nos bancos da fase 3: migration aplicada não pode ser editada.
@@ -52,5 +52,8 @@ func TestCatalogAndExistingChecksum(t *testing.T) {
 	}
 	if checksumSQL(known[1].sql) != "497fe8ed741c58a31014a466f5c0c4cebe93c42c15b7ddc6b01b237e9221acee" {
 		t.Fatal("migration 0002 aplicada foi modificada")
+	}
+	if checksumSQL(known[2].sql) != "4940ae487a9917da408a38eccb9cfeab38f3b13b082128541f0a4519969cdd26" {
+		t.Fatal("migration 0003 aplicada foi modificada")
 	}
 }

@@ -22,7 +22,7 @@ func (r *failingRepository) List(ctx context.Context) ([]contas.Account, error) 
 
 func TestInjectedRepositoryAndSafeError(t *testing.T) {
 	repo := &failingRepository{}
-	h := NewHandlerWithRepositories(repo, cartoes.NewMemoryRepository(), "postgresql")
+	h := NewHandlerWithRepositories(repo, cartoes.NewMemoryRepository(), nil, "postgresql")
 	request := httptest.NewRequest("GET", "/api/v1/accounts", nil)
 	w := httptest.NewRecorder()
 	h.ServeHTTP(w, request)
@@ -51,7 +51,7 @@ func (r *failingCardRepository) List(ctx context.Context) ([]cartoes.Card, error
 
 func TestCardRepositoryContextAndSafeError(t *testing.T) {
 	repo := &failingCardRepository{}
-	h := NewHandlerWithRepositories(contas.NewMemoryRepository(), repo, "postgresql")
+	h := NewHandlerWithRepositories(contas.NewMemoryRepository(), repo, nil, "postgresql")
 	req := httptest.NewRequest("GET", "/api/v1/cards", nil)
 	w := httptest.NewRecorder()
 	h.ServeHTTP(w, req)

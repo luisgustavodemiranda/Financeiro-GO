@@ -73,7 +73,7 @@ func TestPostgresInvoicesIntegration(t *testing.T) {
 			t.Fatal(err)
 		}
 		cleanup(t, card.ID)
-		h := server.NewHandlerWithRepositories(contas.NewPostgresRepository(pool, 5*time.Second), repo, "postgresql")
+		h := server.NewHandlerWithRepositories(contas.NewPostgresRepository(pool, 5*time.Second), repo, cartoes.NewPostgresRepository(pool, 5*time.Second), "postgresql")
 		request := func(path, body string, code int) cartoes.Invoice {
 			t.Helper()
 			w := httptest.NewRecorder()

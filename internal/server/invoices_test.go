@@ -71,7 +71,7 @@ func (r *failingInvoiceRepository) GetInvoice(ctx context.Context, _, _ string) 
 
 func TestInvoiceSafeErrorAndContext(t *testing.T) {
 	repo := &failingInvoiceRepository{}
-	h := NewHandlerWithRepositories(contas.NewMemoryRepository(), repo, "teste")
+	h := NewHandlerWithRepositories(contas.NewMemoryRepository(), repo, nil, "teste")
 	r := httptest.NewRequest("GET", "/api/v1/cards/1/invoices/1", nil)
 	w := httptest.NewRecorder()
 	h.ServeHTTP(w, r)

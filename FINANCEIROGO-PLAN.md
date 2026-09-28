@@ -18,10 +18,13 @@
   - [x] Serviços, repositório em memória e endpoints de faturas/compras/fechamento implementados e testados.
   - [x] Adaptador PostgreSQL, migration 0003 e testes de integração preparados.
   - [x] Migration 0003 aplicada com autorização nos dois bancos e integração real de faturas/compras aprovada.
-  - [ ] Parcelas e pagamentos sem duplicar despesa.
+  - [x] Pagamento integral sem nova despesa: serviço, coordenação em memória, endpoint e testes locais.
+  - [x] Adaptador PostgreSQL, migration 0004 e teste de integração de pagamento preparados.
+  - [ ] Aplicar 0004 após autorização e validar pagamento/rollback em PostgreSQL real.
+  - [ ] Parcelas com soma exata em centavos.
 - [ ] Fase 5: orçamento mensal e projeções com valores previstos e realizados.
 - [ ] Fase 6: interface React + TypeScript e dashboard.
 - [ ] Fase 7: importação CSV com prévia, validação e controle de reimportação.
 - [ ] Fase 8: autenticação, isolamento familiar, backup e preparação para publicação.
 
-Cada incremento termina com testes e documentação. Fase 3 validada em `doc/05-integracao-postgres-validada.md`. Cadastro/listagem de cartões e executor incremental validados em `doc/06-cadastro-cartoes.md`. Compras e faturas estão em `doc/07-compras-faturas.md`: memória e PostgreSQL validados após aplicação autorizada de 0003. Depois, definir o pagamento integral sem duplicar a despesa.
+Cada incremento termina com testes e documentação. Fase 3 validada em `doc/05-integracao-postgres-validada.md`. Cadastro/listagem de cartões e executor incremental validados em `doc/06-cadastro-cartoes.md`. Compras e faturas validadas em `doc/07-compras-faturas.md`. Pagamento integral está em `doc/08-pagamento-fatura.md`: memória validada; aplicação de 0004 e integração real pendentes de autorização.

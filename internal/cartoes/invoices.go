@@ -34,6 +34,7 @@ type Invoice struct {
 	Status      string     `json:"status"`
 	TotalCents  int64      `json:"total_cents"`
 	Purchases   []Purchase `json:"purchases"`
+	Payment     *Payment   `json:"payment"`
 }
 
 func validInvoiceDate(value string) bool {
@@ -80,6 +81,9 @@ func (s *Service) RegisterPurchase(ctx context.Context, cardID, invoiceID, descr
 // Fechar novamente é idempotente: devolve a mesma fatura, sem nova movimentação.
 func (s *Service) CloseInvoice(ctx context.Context, cardID, invoiceID string) (Invoice, error) {
 	return s.repo.UpdateInvoice(ctx, cardID, invoiceID, func(invoice *Invoice) error {
+		if invoice.Status == "paid" {
+			return nil
+		}
 		invoice.Status = "closed"
 		return nil
 	})
@@ -87,16 +91,23 @@ func (s *Service) CloseInvoice(ctx context.Context, cardID, invoiceID string) (I
 
 func cloneInvoice(invoice Invoice) Invoice {
 	invoice.Purchases = append([]Purchase{}, invoice.Purchases...)
+	if invoice.Payment != nil {
+		payment := *invoice.Payment
+		invoice.Payment = &payment
+	}
 	return invoice
 }
 
 // Restringe a atualização a uma compra ou ao fechamento, preservando o histórico.
 func validInvoiceChange(before, after Invoice) bool {
+	if !samePayment(before.Payment, after.Payment) {
+		return false
+	}
 	if before.ID != after.ID || before.CardID != after.CardID || before.StartDate != after.StartDate || before.ClosingDate != after.ClosingDate || before.DueDate != after.DueDate {
 		return false
 	}
 	if slices.Equal(before.Purchases, after.Purchases) {
-		return before.TotalCents == after.TotalCents && after.Status == "closed"
+		return before.TotalCents == after.TotalCents && ((before.Status == "paid" && after.Status == "paid") || (before.Status != "paid" && after.Status == "closed"))
 	}
 	if before.Status != "open" || after.Status != "open" || len(after.Purchases) != len(before.Purchases)+1 || !slices.Equal(before.Purchases, after.Purchases[:len(before.Purchases)]) {
 		return false

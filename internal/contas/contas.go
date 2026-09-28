@@ -32,6 +32,7 @@ type Entry struct {
 	Description string `json:"description"`
 	AmountCents int64  `json:"amount_cents"`
 	Date        string `json:"date"`
+	InvoiceID   string `json:"invoice_id,omitempty"`
 }
 
 // State é o conjunto consistente de conta e lançamentos.

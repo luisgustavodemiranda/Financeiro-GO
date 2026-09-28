@@ -9,14 +9,16 @@ import (
 )
 
 func NewHandler() http.Handler {
-	return NewHandlerWithRepositories(contas.NewMemoryRepository(), cartoes.NewMemoryRepository(), "memoria; dados perdidos ao reiniciar")
+	accounts, cards := contas.NewMemoryRepository(), cartoes.NewMemoryRepository()
+	return NewHandlerWithRepositories(accounts, cards, cartoes.NewMemoryPaymentRepository(accounts, cards), "memoria; dados perdidos ao reiniciar")
 }
 
-func NewHandlerWithRepositories(repo contas.Repository, cards cartoes.Repository, persistence string) http.Handler {
+func NewHandlerWithRepositories(repo contas.Repository, cards cartoes.Repository, payments cartoes.PaymentRepository, persistence string) http.Handler {
 	mux := http.NewServeMux()
 	registerAccountRoutes(mux, contas.NewService(repo))
 	registerCardRoutes(mux, cartoes.NewService(cards))
 	registerInvoiceRoutes(mux, cartoes.NewService(cards))
+	registerPaymentRoutes(mux, cartoes.NewPaymentService(payments))
 	mux.HandleFunc("GET /health", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		_ = json.NewEncoder(w).Encode(map[string]string{"status": "ok"})
