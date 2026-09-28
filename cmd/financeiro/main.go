@@ -23,8 +23,10 @@ func run() error {
 	}
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
-	var repo contas.Repository = contas.NewMemoryRepository()
-	var cards cartoes.Repository = cartoes.NewMemoryRepository()
+	memoryAccounts, memoryCards := contas.NewMemoryRepository(), cartoes.NewMemoryRepository()
+	var repo contas.Repository = memoryAccounts
+	var cards cartoes.Repository = memoryCards
+	var payments cartoes.PaymentRepository = cartoes.NewMemoryPaymentRepository(memoryAccounts, memoryCards)
 	persistence := "memoria; dados perdidos ao reiniciar"
 	if cfg.Persistence == "postgres" {
 		startup, cancel := context.WithTimeout(ctx, cfg.DatabaseTimeout)
@@ -41,9 +43,10 @@ func run() error {
 		}
 		repo = contas.NewPostgresRepository(pool, cfg.DatabaseTimeout)
 		cards = cartoes.NewPostgresRepository(pool, cfg.DatabaseTimeout)
+		payments = cartoes.NewPostgresRepository(pool, cfg.DatabaseTimeout)
 		persistence = "postgresql"
 	}
-	srv := server.New(cfg, server.NewHandlerWithRepositories(repo, cards, persistence))
+	srv := server.New(cfg, server.NewHandlerWithRepositories(repo, cards, payments, persistence))
 	done := make(chan error, 1)
 	go func() {
 		log.Printf("Financeiro-GO disponível em http://%s", cfg.Address)

@@ -25,7 +25,7 @@ func writeError(w http.ResponseWriter, err error) {
 	case errors.Is(err, contas.ErrInvalid), errors.Is(err, cartoes.ErrInvalid), errors.Is(err, cartoes.ErrInvoiceInvalid):
 		status = http.StatusBadRequest
 		message = err.Error()
-	case errors.Is(err, contas.ErrOverflow), errors.Is(err, cartoes.ErrOverflow), errors.Is(err, cartoes.ErrConflict):
+	case errors.Is(err, contas.ErrOverflow), errors.Is(err, cartoes.ErrOverflow), errors.Is(err, cartoes.ErrConflict), errors.Is(err, cartoes.ErrPaymentConflict):
 		status = http.StatusConflict
 		message = err.Error()
 	}

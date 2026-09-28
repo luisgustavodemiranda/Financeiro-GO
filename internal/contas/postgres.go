@@ -80,7 +80,7 @@ func readState(ctx context.Context, tx pgx.Tx, id int64, lock bool) (State, erro
 		return State{}, err
 	}
 	rows, err := tx.Query(ctx, `SELECT id, account_id::text, kind, description, amount_cents,
- to_char(entry_date, 'YYYY-MM-DD') FROM financeiro.entries WHERE account_id=$1 ORDER BY sequence`, id)
+ to_char(entry_date, 'YYYY-MM-DD'), COALESCE(invoice_id::text,'') FROM financeiro.entries WHERE account_id=$1 ORDER BY sequence`, id)
 	if err != nil {
 		return State{}, err
 	}
@@ -88,7 +88,7 @@ func readState(ctx context.Context, tx pgx.Tx, id int64, lock bool) (State, erro
 	state := State{Account: a, Entries: []Entry{}}
 	for rows.Next() {
 		var e Entry
-		if err := rows.Scan(&e.ID, &e.AccountID, &e.Kind, &e.Description, &e.AmountCents, &e.Date); err != nil {
+		if err := rows.Scan(&e.ID, &e.AccountID, &e.Kind, &e.Description, &e.AmountCents, &e.Date, &e.InvoiceID); err != nil {
 			return State{}, err
 		}
 		state.Entries = append(state.Entries, e)

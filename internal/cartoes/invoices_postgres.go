@@ -9,7 +9,7 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
-const invoiceColumns = `id::text,card_id::text,to_char(start_date,'YYYY-MM-DD'),to_char(closing_date,'YYYY-MM-DD'),to_char(due_date,'YYYY-MM-DD'),status,total_cents`
+const invoiceColumns = `id::text,card_id::text,to_char(start_date,'YYYY-MM-DD'),to_char(closing_date,'YYYY-MM-DD'),to_char(due_date,'YYYY-MM-DD'),status,total_cents,paid_account_id::text,to_char(paid_date,'YYYY-MM-DD'),paid_entry_id`
 
 func rollbackInvoice(tx pgx.Tx) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
@@ -27,7 +27,11 @@ func numericID(id string) (int64, error) {
 
 func scanInvoice(row pgx.Row) (Invoice, error) {
 	i := Invoice{Purchases: []Purchase{}}
-	err := row.Scan(&i.ID, &i.CardID, &i.StartDate, &i.ClosingDate, &i.DueDate, &i.Status, &i.TotalCents)
+	var account, date, entry *string
+	err := row.Scan(&i.ID, &i.CardID, &i.StartDate, &i.ClosingDate, &i.DueDate, &i.Status, &i.TotalCents, &account, &date, &entry)
+	if err == nil && account != nil && date != nil && entry != nil {
+		i.Payment = &Payment{AccountID: *account, Date: *date, EntryID: *entry, AmountCents: i.TotalCents}
+	}
 	if errors.Is(err, pgx.ErrNoRows) {
 		err = ErrNotFound
 	}

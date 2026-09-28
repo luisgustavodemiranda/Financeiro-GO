@@ -45,7 +45,7 @@ func TestPostgresCardsIntegration(t *testing.T) {
 			t.Error("limpeza das próprias fixtures falhou")
 		}
 	}()
-	h := server.NewHandlerWithRepositories(contas.NewPostgresRepository(pool, 5*time.Second), cartoes.NewPostgresRepository(pool, 5*time.Second), "postgresql")
+	h := server.NewHandlerWithRepositories(contas.NewPostgresRepository(pool, 5*time.Second), cartoes.NewPostgresRepository(pool, 5*time.Second), cartoes.NewPostgresRepository(pool, 5*time.Second), "postgresql")
 	for range 2 {
 		w := httptest.NewRecorder()
 		h.ServeHTTP(w, httptest.NewRequest("POST", "/api/v1/cards", strings.NewReader(`{"name":"Cartao ficticio de integracao"}`)))
