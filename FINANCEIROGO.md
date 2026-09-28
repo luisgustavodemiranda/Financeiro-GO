@@ -35,7 +35,7 @@ Preparação histórica: [fase 3](doc/03-postgresql.md). Aplicação e validaç�
 
 O módulo `cartoes` também contém compras e faturas com períodos explícitos, vencimento, total em centavos e fechamento manual. Serviços e HTTP validados em memória e PostgreSQL. Migration 0003 aplicada com autorização nos dois bancos, com integração real aprovada. Contrato e regras em [compras e faturas](doc/07-compras-faturas.md).
 
-A compra reconhece despesa no cartão e obrigação pelo mesmo valor, sem chamar o serviço de despesas bancárias. A data da compra é sua referência; vencimento não é data de pagamento. Ainda não há relatório consolidado. Pagamento integral está implementado e validado em memória: gera saída invoice_payment, reduz saldo e quita a fatura, sem nova despesa. PaymentRepository coordena conta e fatura atomicamente; PostgreSQL está preparado, com migration 0004 e integração real pendentes. Regras e limitações em [pagamento de fatura](doc/08-pagamento-fatura.md).
+A compra reconhece despesa no cartão e obrigação pelo mesmo valor, sem chamar o serviço de despesas bancárias. A data da compra é sua referência; vencimento não é data de pagamento. Ainda não há relatório consolidado. Pagamento integral está implementado e validado em memória e PostgreSQL: gera saída invoice_payment, reduz saldo e quita a fatura, sem nova despesa. PaymentRepository coordena conta e fatura atomicamente; migration 0004 aplicada com autorização nos dois bancos e integração real aprovada. Regras e limitações em [pagamento de fatura](doc/08-pagamento-fatura.md).
 
 ## Regras para fases futuras
 
@@ -53,4 +53,4 @@ Cadastro e listagem de cartões não movimentam contas, receitas ou despesas. O 
 - A soma das parcelas precisa coincidir exatamente com o valor total da compra.
 - Previsão mensal não garante saldo antes de cada vencimento.
 
-Parcelas, pagamentos parciais, transferências e importação permanecem futuros. Compras e faturas simples estão disponíveis em memória e PostgreSQL, com persistência validada até 0003. Pagamento integral está validado em memória; sua persistência 0004 aguarda validação real.
+Parcelas, pagamentos parciais, transferências e importação permanecem futuros. Compras e faturas simples estão disponíveis em memória e PostgreSQL, com persistência validada até 0003. Pagamento integral está validado em memória e PostgreSQL após aplicar 0004.

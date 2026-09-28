@@ -20,11 +20,11 @@
   - [x] Migration 0003 aplicada com autorização nos dois bancos e integração real de faturas/compras aprovada.
   - [x] Pagamento integral sem nova despesa: serviço, coordenação em memória, endpoint e testes locais.
   - [x] Adaptador PostgreSQL, migration 0004 e teste de integração de pagamento preparados.
-  - [ ] Aplicar 0004 após autorização e validar pagamento/rollback em PostgreSQL real.
+  - [x] Migration 0004 aplicada com autorização nos dois bancos; pagamento, concorrência e rollback validados em PostgreSQL real.
   - [ ] Parcelas com soma exata em centavos.
 - [ ] Fase 5: orçamento mensal e projeções com valores previstos e realizados.
 - [ ] Fase 6: interface React + TypeScript e dashboard.
 - [ ] Fase 7: importação CSV com prévia, validação e controle de reimportação.
 - [ ] Fase 8: autenticação, isolamento familiar, backup e preparação para publicação.
 
-Cada incremento termina com testes e documentação. Fase 3 validada em `doc/05-integracao-postgres-validada.md`. Cadastro/listagem de cartões e executor incremental validados em `doc/06-cadastro-cartoes.md`. Compras e faturas validadas em `doc/07-compras-faturas.md`. Pagamento integral está em `doc/08-pagamento-fatura.md`: memória validada; aplicação de 0004 e integração real pendentes de autorização.
+Cada incremento termina com testes e documentação. Fase 3 validada em `doc/05-integracao-postgres-validada.md`. Cadastro/listagem de cartões e executor incremental validados em `doc/06-cadastro-cartoes.md`. Compras e faturas validadas em `doc/07-compras-faturas.md`. Pagamento integral está em `doc/08-pagamento-fatura.md`: memória e PostgreSQL validados após aplicar 0004. Próximo incremento: parcelas com soma exata em centavos.

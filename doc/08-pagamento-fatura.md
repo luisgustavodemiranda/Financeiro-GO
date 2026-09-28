@@ -1,6 +1,6 @@
 # Fase 4 — Pagamento integral de fatura
 
-Branch: `feature/fase-4-pagamento-fatura`. [PR #7](https://github.com/luisgustavodemiranda/Financeiro-GO/pull/7) em rascunho. Implementação e testes em memória concluídos. Adaptador PostgreSQL, migration 0004 e integração preparados, ainda sem execução no banco. A etapa foi retomada em 28/09/2026, preservando o trabalho local após interrupção por limite da revisão automática de permissões.
+Branch: `feature/fase-4-pagamento-fatura`. [PR #7](https://github.com/luisgustavodemiranda/Financeiro-GO/pull/7) com implementação e validação real concluídas. Migration 0004 aplicada com autorização nos dois bancos; memória e PostgreSQL aprovados. A etapa foi retomada em 28/09/2026, preservando o trabalho local após interrupção por limite da revisão automática de permissões.
 
 ## Regras e contrato
 
@@ -65,13 +65,13 @@ go vet ./...
 go build ./...
 ```
 
-## Banco preparado, não aplicado
+## Banco aplicado e validado
 
 `migrations/0004_invoice_payments.sql` amplia as constraints de tipo de lançamento e status, adiciona a referência única de lançamento para fatura e os dados de pagamento na fatura. Colunas novas começam nulas; contas, lançamentos e faturas anteriores são preservados, sem backfill financeiro. 0001/0002/0003 permanecem imutáveis, com checksums protegidos por teste.
 
-Inspeção somente leitura em 28/09/2026 confirmou, nos dois bancos exclusivos, histórico até 0003 e hashes esperados, usuários próprios sem superusuário, colunas atuais e constraints entries_kind_check/invoices_status_check compatíveis com o SQL preparado. Não houve DDL nem execução de fixtures de pagamento.
+Inspeção somente leitura em 28/09/2026 confirmou, nos dois bancos exclusivos, histórico até 0003 e hashes esperados, usuários próprios sem superusuário, colunas atuais e constraints entries_kind_check/invoices_status_check compatíveis com o SQL preparado. A inspeção foi repetida imediatamente antes da execução autorizada. O executor aplicou somente 0004 nos dois bancos e a inspeção posterior confirmou as colunas, constraints e histórico preservado. Checksum de 0004: `042df8df5bac352b22695e34b97d7b3c996a99dab3a137abfdac558b1d66fecb`.
 
-A próxima execução requer autorização específica para aplicar 0004 em financeiro_go e financeiro_go_test e executar integração somente no segundo, limpando suas próprias fixtures. Revalidar o estado antes da aplicação. ALTER TABLE pode bloquear acesso às tabelas durante a transação; coordenar parada da API para aplicar e atualizar o binário. Esta versão não inicia em PostgreSQL com 0004 pendente; binários anteriores rejeitam a nova versão. Não há downgrade automático.
+Aplicação autorizada em financeiro_go e financeiro_go_test concluída em 28/09/2026. A integração executou somente no segundo, com limpeza das próprias fixtures. Futuras migrations exigem nova autorização específica e revalidação do estado. ALTER TABLE pode bloquear acesso às tabelas durante a transação; coordenar parada da API para aplicar e atualizar o binário. Esta versão não inicia em PostgreSQL com 0004 pendente; binários anteriores rejeitam a nova versão. Não há downgrade automático.
 
 As constraints complementam os bloqueios e validações da aplicação. Escrita SQL manual que contorne o serviço não recebe todas as regras de consistência entre módulos. Os testes removem apenas suas fixtures, desfazendo primeiro a referência entre pagamento e lançamento; não executam TRUNCATE nem migrations.
 
@@ -79,4 +79,4 @@ As constraints complementam os bloqueios e validações da aplicação. Escrita 
 
 gofmt, go test ./..., go vet ./... e go build ./... aprovados. Cobertura local inclui débito sem nova despesa, saldo negativo, limites de int64, repetição, conta/data divergentes, fatura aberta/vazia, datas, ausência de recursos, cancelamento antes do commit, cópias e concorrência entre pagamento repetido e receitas comuns. Endpoints verificam o contrato e rejeitam valor informado pelo cliente.
 
-O teste opt-in PostgreSQL reutiliza a suíte e acrescenta persistência por outro pool e falha deliberada na última escrita, para comprovar rollback do lançamento e do saldo. Foi preparado, mas ainda não executado; SKIP não comprova integração real. O PR deve permanecer em rascunho enquanto 0004 e essa validação estiverem pendentes. Depois, o próximo incremento recomendado é parcelamento com divisão exata dos centavos.
+O teste opt-in PostgreSQL reutiliza a suíte e acrescenta persistência por outro pool e falha deliberada na última escrita, para comprovar rollback do lançamento e do saldo. Foi executado e aprovado em financeiro_go_test. A suíte completa go test ./... -count=1 passou com integração habilitada, assim como go vet ./... e go build ./.... A API iniciou com PostgreSQL no banco da aplicação após verificar 0004, sem inserir fixtures nele. O CI não acessa esses bancos locais e sua evidência é separada. Sem configuração de integração, SKIP continua não comprovando banco real. Não há pendência de banco neste incremento. Depois, o próximo incremento recomendado é parcelamento com divisão exata dos centavos.

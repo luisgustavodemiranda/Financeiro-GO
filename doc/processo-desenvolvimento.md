@@ -57,4 +57,4 @@ Não foi medida economia de tokens por sessão: ela depende da tarefa e do conte
 
 ## Próximo incremento
 
-A fase 3 foi validada conforme [05-integracao-postgres-validada.md](05-integracao-postgres-validada.md). Cadastro de cartões e executor incremental foram validados em [06-cadastro-cartoes.md](06-cadastro-cartoes.md), e compras/faturas em [07-compras-faturas.md](07-compras-faturas.md). O [pagamento integral](08-pagamento-fatura.md) está validado em memória, com migration 0004 e integração PostgreSQL aguardando autorização. Depois, implementar parcelas com soma exata dos centavos.
+A fase 3 foi validada conforme [05-integracao-postgres-validada.md](05-integracao-postgres-validada.md). Cadastro de cartões e executor incremental foram validados em [06-cadastro-cartoes.md](06-cadastro-cartoes.md), e compras/faturas em [07-compras-faturas.md](07-compras-faturas.md). O [pagamento integral](08-pagamento-fatura.md) foi validado em memória e PostgreSQL após aplicar 0004 com autorização nos dois bancos. Depois, implementar parcelas com soma exata dos centavos.
