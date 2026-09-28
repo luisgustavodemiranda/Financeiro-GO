@@ -1,6 +1,6 @@
 # Fase 4 — Pagamento integral de fatura
 
-Branch: `feature/fase-4-pagamento-fatura`. Implementação e testes em memória concluídos. Adaptador PostgreSQL, migration 0004 e integração preparados, ainda sem execução no banco. A etapa foi retomada em 28/09/2026, preservando o trabalho local após interrupção por limite da revisão automática de permissões.
+Branch: `feature/fase-4-pagamento-fatura`. [PR #7](https://github.com/luisgustavodemiranda/Financeiro-GO/pull/7) em rascunho. Implementação e testes em memória concluídos. Adaptador PostgreSQL, migration 0004 e integração preparados, ainda sem execução no banco. A etapa foi retomada em 28/09/2026, preservando o trabalho local após interrupção por limite da revisão automática de permissões.
 
 ## Regras e contrato
 
